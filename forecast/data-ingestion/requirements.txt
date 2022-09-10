@@ -2,3 +2,6 @@ PyGithub
 pycoingecko
 requests
 pandas
+numpy
+tensorflow
+sklearn
