@@ -1,8 +1,6 @@
 # my-crypto-world
 
 ---
-***
-___
 
 ## Long term HoDLs
 
