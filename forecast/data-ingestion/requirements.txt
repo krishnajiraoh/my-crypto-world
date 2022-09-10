@@ -1,0 +1,4 @@
+PyGithub
+python-coinmarketcap
+requests
+pandas
