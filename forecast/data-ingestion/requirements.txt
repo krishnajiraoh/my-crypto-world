@@ -1,4 +1,4 @@
 PyGithub
-python-coinmarketcap
+pycoingecko
 requests
 pandas
