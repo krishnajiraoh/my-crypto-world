@@ -21,7 +21,7 @@ jobs:
       - name: Install necessary libraries
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r forecast/data-ingestion/requirements.txt
           
       - name: Execute Python Script
         env: 
