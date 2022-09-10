@@ -20,6 +20,7 @@ def inject():
     message = "updated using PyGithub API"
     
     repo.update_file(path, message, content, contents.sha , branch="main") 
+    print("Data Injected successfully")
 
 if __name__ == '__main__':
     inject()
