@@ -24,4 +24,4 @@
 
 #### Watchlist
 | Coin| Description/Comments|Entry|
-| GMX | DEX perpertual |
+| GMX | DEX perpertual | |
