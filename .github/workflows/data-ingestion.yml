@@ -25,5 +25,5 @@ jobs:
           
       - name: Execute Python Script
         env: 
-          URI: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          URI: ${{ secrets.GH_ACCESS_TOKEN }}
         run: python forecast/data-ingestion/ingestion.py
