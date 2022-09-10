@@ -1,0 +1,30 @@
+name: data-ingestion
+
+on:
+  schedule:
+    - cron: '0 0/24 * * *' #Execute every 6 hours
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Access the repo
+        uses: actions/checkout@v2 
+    
+      - name: Configure Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.7' 
+      
+      - name: Install necessary libraries
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas
+          pip install coinmarketcapapi
+          
+      - name: Execute Python Script
+        env: 
+          URI: ${{ secrets.URI }}
+        run: python forecast/data-ingestion/ingestion.py
