@@ -6,6 +6,7 @@ import os
 
 def inject():
     github_access_token = os.environ.get('GITHUB_ACCESS_TOKEN') 
+    print(f"Token{github_access_token}")
 
     cg = CoinGeckoAPI()
     g = Github(github_access_token)
