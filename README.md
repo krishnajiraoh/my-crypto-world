@@ -19,3 +19,9 @@
 | SYS| Load up | <$0.10|
 | VRA| DCA | <$0.0002|
 | METIS| load up | <$14|
+| PYR| load the hell up | <$1.5|
+
+
+#### Watchlist
+| Coin| Description/Comments|Entry|
+| GMX | DEX perpertual |
