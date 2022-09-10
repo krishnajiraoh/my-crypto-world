@@ -1,18 +1,19 @@
 from pycoingecko import CoinGeckoAPI
 from github import Github,InputGitAuthor
 import pandas as pd
+import os
     
 
 def inject():
-    github_access_token = "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"    
+    github_access_token = os.environ.get('GITHUB_ACCESS_TOKEN') 
 
     cg = CoinGeckoAPI()
     g = Github(github_access_token)
 
     data = cg.get_coin_ohlc_by_id(id='bitcoin', vs_currency="usd", days="30")
-    cols= ["Time", "Open", "High", "Low", "Close"]
+    cols= ["Time_in_ms", "Open", "High", "Low", "Close"]
     df = pd.DataFrame(data, columns=cols)   
-    df["Time"] = pd.to_datetime(df.Time, unit='ms')
+    #df["Time"] = pd.to_datetime(df.Time, unit='ms')
 
     repo = g.get_repo("krishnajiraoh/my-crypto-world")    
     path = "forecast/data/history_data.csv"
