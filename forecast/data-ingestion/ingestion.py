@@ -1,5 +1,5 @@
 from pycoingecko import CoinGeckoAPI
-from github import Github,InputGitAuthor
+from github import Github
 import pandas as pd
 import os
     

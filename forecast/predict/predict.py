@@ -1,6 +1,9 @@
+import os
+import io
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from github import Github
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import LSTM
@@ -15,13 +18,35 @@ def create_dataset(dataset, look_back=1):
 		dataY.append(dataset[i + look_back, 0])
 	return np.array(dataX), np.array(dataY)
 
+def get_data():
+    #pd.read_csv('../data/history_data.csv', engine='python') #df["Close"]
+    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+    g = Github(github_access_token)
+
+    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
+    path = "forecast/data/history_data.csv"
+    contents = repo.get_contents(path)
+    data = contents.decoded_content.decode("utf-8") 
+    
+    return pd.read_csv(io.StringIO(data), sep=",")
+
+def update_forecasted_data(pred, path="forecast/data/Forecasted_Prices.csv"):
+    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+    g = Github(github_access_token)
+    
+    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
+    contents = repo.get_contents(path)
+    content = pred.to_csv(index=False)
+    message = "updated using PyGithub API"
+    
+    repo.update_file(path, message, content, contents.sha , branch="main") 
 
 def predict():
 
     tf.random.set_seed(7)
 
     # load the dataset
-    dataframe = pd.read_csv('../data/history_data.csv', engine='python') #df["Close"]
+    dataframe = get_data()
     dataset = dataframe[['Close']].values
     dataset = dataset.astype('float32')
     dataset[:5]
@@ -90,7 +115,7 @@ def predict():
     pred = pd.DataFrame(np.vstack((dates, f))).T
     pred.columns = ["Time", "Forecasted Price"]
     pred["Time"] = pd.to_datetime(pred.Time, unit='ms')
-    pred.to_csv("../data/Forecasted_Prices.csv")
+    update_forecasted_data(pred) #pred.to_csv("../data/Forecasted_Prices.csv")
 
     #---------------------------------------------------------#
     print("Prices Forecasted")
