@@ -19,7 +19,7 @@ def inject():
     path = "forecast/data/history_data.csv"
     contents = repo.get_contents(path)
     content = df.to_csv(index=False)
-    message = "updated using PyGithub API"
+    message = "Updated by Ingestion script using PyGithub API"
     
     repo.update_file(path, message, content, contents.sha , branch="main") 
     print("Data Injected successfully")

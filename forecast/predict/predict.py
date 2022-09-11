@@ -30,16 +30,37 @@ def get_data():
     
     return pd.read_csv(io.StringIO(data), sep=",")
 
+def get_forecasted_history_data(path="forecast/data/Forecasted_Prices.csv"):
+    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+    g = Github(github_access_token)
+
+    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
+    contents = repo.get_contents(path)
+
+    data = contents.decoded_content.decode("utf-8") 
+    return pd.read_csv(io.StringIO(data), sep=",") 
+
+def concat_new_and_history_data(pred,forc_history_df):
+    df = pd.concat([pred, forc_history_df]).set_index(["Time"])
+    #df.set_index(["Time"], inplace=True)
+    df = df[~df.index.duplicated(keep='first')]
+    df = df.reset_index()
+    return df
+
 def update_forecasted_data(pred, path="forecast/data/Forecasted_Prices.csv"):
     github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
     g = Github(github_access_token)
-    
+
+    df = concat_new_and_history_data(pred, get_forecasted_history_data())
+    content = df.to_csv(index=False)
+    print(content)
+
     repo = g.get_repo("krishnajiraoh/my-crypto-world")    
     contents = repo.get_contents(path)
-    content = pred.to_csv(index=False)
-    message = "updated using PyGithub API"
-    
-    repo.update_file(path, message, content, contents.sha , branch="main") 
+    message = "Updated by Prediction script using PyGithub API"
+
+    #content = pred.to_csv(index=False)
+    repo.update_file(path, message, content, contents.sha , branch="main")
 
 def predict():
 
@@ -78,7 +99,7 @@ def predict():
     model.add(LSTM(4, input_shape=(1, look_back)))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(trainX, trainY, epochs=100, batch_size=1, verbose=2)
+    model.fit(trainX, trainY, epochs=50, batch_size=1, verbose=2)
 
     #---------------------------------------------------------#
     # make predictions
@@ -114,7 +135,7 @@ def predict():
     #---------------------------------------------------------#
     pred = pd.DataFrame(np.vstack((dates, f))).T
     pred.columns = ["Time", "Forecasted Price"]
-    pred["Time"] = pd.to_datetime(pred.Time, unit='ms')
+    #pred["Time"] = pd.to_datetime(pred.Time, unit='ms')
     update_forecasted_data(pred) #pred.to_csv("../data/Forecasted_Prices.csv")
 
     #---------------------------------------------------------#
