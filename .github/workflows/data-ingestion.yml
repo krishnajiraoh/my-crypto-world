@@ -32,3 +32,4 @@ jobs:
         env: 
           GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: python forecast/predict/predict.py
+
