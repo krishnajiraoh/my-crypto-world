@@ -8,79 +8,12 @@ on:
 jobs:
 
   data-ingestion:
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Access the repo
-        uses: actions/checkout@v2 
-    
-      - name: Configure Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9.7' 
-      
-      - name: Install necessary libraries
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r forecast/data-ingestion/requirements.txt
-          
-      - name: Execute Data ingestion Script
-        env: 
-          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          COIN: 'bitcoin'
-          LOOK_BACK_DAYS: 30
-          HISTORY_DATA_PATH: "forecast/data/HistoryData.csv"
-        run: python forecast/data-ingestion/ingestion.py
+    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-ingestion.yml
   
   data-forecast:
     needs: data-ingestion
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Access the repo
-        uses: actions/checkout@v2 
-    
-      - name: Configure Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9.7' 
-      
-      - name: Install necessary libraries
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r forecast/predict/requirements.txt
-
-      - name: Execute Predict Prices Script
-        env: 
-          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          HISTORY_DATA_PATH: "forecast/data/HistoryData.csv"
-          FORECASTED_PRICES_FILE_PATH: "forecast/data/ForecastedPrices.csv"
-        run: python forecast/predict/predict.py
+    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-forecast.yml
 
   data-monitoring:
     needs : [data-ingestion, data-forecast]
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Access the repo
-        uses: actions/checkout@v2 
-    
-      - name: Configure Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9.7' 
-      
-      - name: Install necessary libraries
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r forecast/monitoring/requirements.txt
-          
-      - name: Execute Data ingestion Script
-        env: 
-          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          COIN: 'bitcoin'
-          LOOK_BACK_DAYS: 30
-          FORECASTED_PRICES_FILE_PATH: "forecast/data/ForecastedPrices.csv"
-          MONITORING_FILE_PATH: "forecast/data/Monitoring.csv"
-          ACTUALVSFORECASTED_FILEPATH: "forecast/data/ActualVsForecasted.csv"
-        run: python forecast/monitoring/monitoring.py
+    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-monitoring.yml
