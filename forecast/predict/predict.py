@@ -131,7 +131,8 @@ def predict():
     #---------------------------------------------------------#
     pred = pd.DataFrame(np.vstack((dates, f))).T
     pred.columns = ["Time", "Forecasted Price"]
-    #pred["Time"] = pd.to_datetime(pred.Time, unit='ms')
+    #pred["Time_String"] = pd.to_datetime(pred.Time, unit='ms')
+    pred.sort_values(by="Time", ascending=False, inplace=True)
     update_forecasted_data(pred,github_access_token,repo_path,forcasted_file_path) #pred.to_csv("../data/Forecasted_Prices.csv")
 
     #---------------------------------------------------------#
