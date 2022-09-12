@@ -8,3 +8,12 @@ Referenced links
 4. PyGithub
     - https://pygithub.readthedocs.io/en/latest/examples/Repository.html#get-a-specific-content-file
     - https://martinheinz.dev/blog/25
+
+
+### ENV:
+
+    - export GH_ACCESS_TOKEN="*****************"
+    - export GITHUB_REPOSITORY="krishnajiraoh/my-crypto-world”
+    - export HISTORY_DATA_PATH="forecast/data/history_data.csv"
+    - export COIN=“bitcoin” 
+    - export LOOK_BACK_DAYS=30 
