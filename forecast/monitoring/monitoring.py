@@ -62,12 +62,28 @@ def update_monitoring_data(metrics_df, path="forecast/data/Monitoring.csv"):
 
     repo.update_file(path, message, content, contents.sha , branch="main")
 
+def update_compared_data(df, path="forecast/data/ActualVsForecasted.csv"):
+    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+    g = Github(github_access_token)
+    
+    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
+    contents = repo.get_contents(path)
+    message = "Updated by Monitoring script using PyGithub API"
+
+    content = df.to_csv(index=False)
+    repo.update_file(path, message, content, contents.sha , branch="main")
+
 def monitor():
     pred = get_forecasted_data()
     actual = get_actual_data()
+
     merge_df = actual.merge(pred, on="Time", how="inner")
+    merge_df.sort_values(by="Time", ascending=False, inplace=True)
+
     metrics_df = get_metrics(merge_df)
+    
     update_monitoring_data(metrics_df)
+    update_compared_data(merge_df)
 
 if __name__ == '__main__':
     monitor()
