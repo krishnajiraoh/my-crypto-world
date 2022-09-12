@@ -17,3 +17,4 @@ jobs:
   data-monitoring:
     needs : [data-ingestion, data-forecast]
     uses: krishnajiraoh/my-crypto-world/.github/workflows/data-monitoring.yml
+
