@@ -1,5 +1,6 @@
 [![data-ingestion](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-ingestion.yml/badge.svg)](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-ingestion.yml)
 [![data-forecast](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-forecast.yml/badge.svg)](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-forecast.yml)
+[![data-monitoring](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-monitoring.yml/badge.svg)](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-monitoring.yml)
 
 ### Referenced links
 1. Secrets: https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md
