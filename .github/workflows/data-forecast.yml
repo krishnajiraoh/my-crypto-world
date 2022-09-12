@@ -26,4 +26,5 @@ jobs:
       - name: Execute Predict Prices Script
         env: 
           GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          FORECASTED_PRICES_FILE_PATH: "forecast/data/ForecastedPrices.csv"
         run: python forecast/predict/predict.py
