@@ -4,7 +4,11 @@ on:
   #schedule:
   #  - cron: '0 0/24 * * *' #Execute every 6 hours
   workflow_dispatch:
-  workflow_call:  
+  workflow_call: 
+    workflow_call: 
+    secrets:
+      GH_ACCESS_TOKEN:
+        required: true 
 
 jobs:
   build:
