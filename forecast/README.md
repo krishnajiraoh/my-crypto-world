@@ -1,4 +1,6 @@
-Referenced links
+[![data-forecast](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-forecast.yml/badge.svg)](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-forecast.yml)
+
+###Referenced links
 1. Secrets: https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md
 2. Coingecko Doc: https://www.coingecko.com/en/api/documentation https://github.com/man-c/pycoingecko
 3. Machine learning mastery:
