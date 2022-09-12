@@ -1,4 +1,4 @@
 pycoingecko
-github
+PyGithub
 sklearn
 pandas
