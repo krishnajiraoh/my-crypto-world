@@ -12,8 +12,10 @@ Referenced links
 
 ### ENV:
 
-    - export GH_ACCESS_TOKEN="*****************"
-    - export GITHUB_REPOSITORY="krishnajiraoh/my-crypto-world”
-    - export HISTORY_DATA_PATH="forecast/data/history_data.csv"
-    - export COIN=“bitcoin” 
-    - export LOOK_BACK_DAYS=30 
+        export GH_ACCESS_TOKEN="*****************"
+        export GITHUB_REPOSITORY="krishnajiraoh/my-crypto-world”
+        export HISTORY_DATA_PATH="forecast/data/HistoryData.csv"
+        export FORECASTED_PRICES_FILE_PATH="forecast/data/ForecastedPrices.csv"
+        
+        export COIN=“bitcoin” 
+        export LOOK_BACK_DAYS=30 

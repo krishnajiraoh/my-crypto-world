@@ -8,8 +8,9 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import LSTM
 from sklearn.preprocessing import MinMaxScaler
+def get_env_data():
+    return os.environ.get('GH_ACCESS_TOKEN'), os.environ.get('GITHUB_REPOSITORY'), os.environ.get('HISTORY_DATA_PATH'), os.environ.get('FORECASTED_PRICES_FILE_PATH')  
 
-# convert an array of values into a dataset matrix
 def create_dataset(dataset, look_back=1):
 	dataX, dataY = [], []
 	for i in range(len(dataset)-look_back-1):
@@ -18,26 +19,22 @@ def create_dataset(dataset, look_back=1):
 		dataY.append(dataset[i + look_back, 0])
 	return np.array(dataX), np.array(dataY)
 
-def get_data():
-    #pd.read_csv('../data/history_data.csv', engine='python') #df["Close"]
-    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+def get_history_data(github_access_token,repo_path,file_path):
     g = Github(github_access_token)
 
-    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
-    path = "forecast/data/history_data.csv"
-    contents = repo.get_contents(path)
+    repo = g.get_repo(repo_path)    
+    contents = repo.get_contents(file_path)
     data = contents.decoded_content.decode("utf-8") 
     
     return pd.read_csv(io.StringIO(data), sep=",")
 
-def get_forecasted_history_data(path="forecast/data/Forecasted_Prices.csv"):
-    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+def get_forecasted_history_data(github_access_token,repo_path,file_path):
     g = Github(github_access_token)
 
-    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
-    contents = repo.get_contents(path)
-
+    repo = g.get_repo(repo_path)       
+    contents = repo.get_contents(file_path)
     data = contents.decoded_content.decode("utf-8") 
+    
     return pd.read_csv(io.StringIO(data), sep=",") 
 
 def concat_new_and_history_data(pred,forc_history_df):
@@ -47,26 +44,25 @@ def concat_new_and_history_data(pred,forc_history_df):
     df = df.reset_index()
     return df
 
-def update_forecasted_data(pred, path="forecast/data/Forecasted_Prices.csv"):
-    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+def update_forecasted_data(pred,github_access_token,repo_path,file_path):
     g = Github(github_access_token)
 
-    df = concat_new_and_history_data(pred, get_forecasted_history_data())
+    df = concat_new_and_history_data(pred, get_forecasted_history_data(github_access_token,repo_path,file_path))
     content = df.to_csv(index=False)
     
-    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
-    contents = repo.get_contents(path)
+    repo = g.get_repo(repo_path)       
+    contents = repo.get_contents(file_path)
     message = "Updated by Prediction script using PyGithub API"
 
     #content = pred.to_csv(index=False)
-    repo.update_file(path, message, content, contents.sha , branch="main")
+    repo.update_file(file_path, message, content, contents.sha , branch="main")
 
 def predict():
 
-    tf.random.set_seed(7)
-
+    github_access_token,repo_path,file_path,forcasted_file_path = get_env_data()
+    print(github_access_token,repo_path,file_path,forcasted_file_path)
     # load the dataset
-    dataframe = get_data()
+    dataframe = get_history_data(github_access_token,repo_path,file_path)
     dataset = dataframe[['Close']].values
     dataset = dataset.astype('float32')
     dataset[:5]
@@ -94,11 +90,12 @@ def predict():
 
     #---------------------------------------------------------#
     # create and fit the LSTM network
+    tf.random.set_seed(7)
     model = Sequential()
     model.add(LSTM(4, input_shape=(1, look_back)))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error', optimizer='adam')
-    model.fit(trainX, trainY, epochs=50, batch_size=1, verbose=2)
+    model.fit(trainX, trainY, epochs=100, batch_size=1, verbose=2)
 
     #---------------------------------------------------------#
     # make predictions
@@ -135,7 +132,7 @@ def predict():
     pred = pd.DataFrame(np.vstack((dates, f))).T
     pred.columns = ["Time", "Forecasted Price"]
     #pred["Time"] = pd.to_datetime(pred.Time, unit='ms')
-    update_forecasted_data(pred) #pred.to_csv("../data/Forecasted_Prices.csv")
+    update_forecasted_data(pred,github_access_token,repo_path,forcasted_file_path) #pred.to_csv("../data/Forecasted_Prices.csv")
 
     #---------------------------------------------------------#
     print("Prices Forecasted")
