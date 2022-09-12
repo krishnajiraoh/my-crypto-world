@@ -16,6 +16,7 @@ def get_forecasted_data():
     return pd.read_csv(io.StringIO(data), sep=",")
 
 def get_actual_data():
+    cg = CoinGeckoAPI()
     data = cg.get_coin_ohlc_by_id(id='bitcoin', vs_currency="usd", days="30")
     cols= ["Time", "Open", "High", "Low", "Close"]
     df = pd.DataFrame(data, columns=cols)
@@ -45,8 +46,8 @@ def get_history_monitoring_data(path="forecast/data/Monitoring.csv"):
     
     return data
 
-def concat_new_and_history_mon_data(data,df2):
-    return data + df2.to_csv(index=False, header=False)
+def concat_new_and_history_mon_data(metrics_df, data):
+    return data + metrics_df.to_csv(index=False, header=False)
 
 def update_monitoring_data(metrics_df, path="forecast/data/Monitoring.csv"):
     github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
@@ -54,16 +55,12 @@ def update_monitoring_data(metrics_df, path="forecast/data/Monitoring.csv"):
 
     history_mon_data = get_history_monitoring_data()
     content = concat_new_and_history_mon_data(metrics_df, history_mon_data)
-    print(content)
-
+    
     repo = g.get_repo("krishnajiraoh/my-crypto-world")    
     contents = repo.get_contents(path)
-    message = "Updated by Prediction script using PyGithub API"
+    message = "Updated by Monitoring script using PyGithub API"
 
-    #content = pred.to_csv(index=False)
     repo.update_file(path, message, content, contents.sha , branch="main")
-
-    df.to_csv(index=False, header=False)
 
 def monitor():
     pred = get_forecasted_data()
