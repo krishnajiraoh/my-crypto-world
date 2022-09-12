@@ -9,6 +9,8 @@ jobs:
 
   data-ingestion:
     uses: krishnajiraoh/my-crypto-world/.github/workflows/data-ingestion.yml@main
+    secrets:
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
   
   data-forecast:
     needs: data-ingestion
