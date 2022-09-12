@@ -5,7 +5,7 @@ on:
   #  - cron: '0 0/24 * * *' #Execute every 6 hours
   workflow_dispatch 
 
-jobs:
+jobs: 
 
   data-ingestion:
     uses: krishnajiraoh/my-crypto-world/.github/workflows/data-ingestion.yml@main
