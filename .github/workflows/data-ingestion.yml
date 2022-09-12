@@ -26,4 +26,6 @@ jobs:
       - name: Execute Data ingestion Script
         env: 
           GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          COIN: 'bitcoin'
+          LOOK_BACK_DAYS: 30
         run: python forecast/data-ingestion/ingestion.py
