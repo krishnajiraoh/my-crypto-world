@@ -8,13 +8,13 @@ on:
 jobs:
 
   data-ingestion:
-    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-ingestion.yml@master
+    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-ingestion.yml@main
   
   data-forecast:
     needs: data-ingestion
-    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-forecast.yml
+    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-forecast.yml@main
 
   data-monitoring:
     needs : [data-ingestion, data-forecast]
-    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-monitoring.yml
+    uses: krishnajiraoh/my-crypto-world/.github/workflows/data-monitoring.yml@main
 
