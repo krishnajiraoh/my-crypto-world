@@ -53,8 +53,7 @@ def update_forecasted_data(pred, path="forecast/data/Forecasted_Prices.csv"):
 
     df = concat_new_and_history_data(pred, get_forecasted_history_data())
     content = df.to_csv(index=False)
-    print(content)
-
+    
     repo = g.get_repo("krishnajiraoh/my-crypto-world")    
     contents = repo.get_contents(path)
     message = "Updated by Prediction script using PyGithub API"

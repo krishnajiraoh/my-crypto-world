@@ -1,5 +1,4 @@
 PyGithub
-pycoingecko
 requests
 pandas
 numpy
