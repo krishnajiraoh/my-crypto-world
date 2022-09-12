@@ -28,4 +28,5 @@ jobs:
           GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
           COIN: 'bitcoin'
           LOOK_BACK_DAYS: 30
+          HISTORY_DATA_PATH: "forecast/data/history_data.csv"
         run: python forecast/data-ingestion/ingestion.py
