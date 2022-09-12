@@ -3,7 +3,8 @@ name: data-forecast
 on:
   #schedule:
   #  - cron: '0 0/24 * * *' #Execute every 6 hours
-  workflow_dispatch 
+  workflow_dispatch:
+  workflow_call:  
 
 jobs:
   build:
