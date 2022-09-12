@@ -2,6 +2,12 @@
 [![data-forecast](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-forecast.yml/badge.svg)](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-forecast.yml)
 [![data-monitoring](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-monitoring.yml/badge.svg)](https://github.com/krishnajiraoh/my-crypto-world/actions/workflows/data-monitoring.yml)
 
+
+### Run times:
+- E2E Reused : ~3m 36s
+- E2E Isolated : ~3m 14s
+- E2E Grouped : ~2m 9s
+
 ### Referenced links
 1. Secrets: https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md
 2. Coingecko Doc: https://www.coingecko.com/en/api/documentation https://github.com/man-c/pycoingecko
@@ -24,3 +30,6 @@
         export ACTUALVSFORECASTED_FILEPATH="forecast/data/ActualVsForecasted.csv"
         export COIN=“bitcoin” 
         export LOOK_BACK_DAYS=30 
+
+### To-do:
+- https://github.com/jaeyow/sagemaker-linear-learner
