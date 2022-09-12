@@ -50,7 +50,7 @@ def concat_new_and_history_mon_data(metrics_df, data):
 def update_monitoring_data(metrics_df, github_access_token, repo_path, path):
     g = Github(github_access_token)
 
-    history_mon_data = get_history_monitoring_data()
+    history_mon_data = get_history_monitoring_data(github_access_token, repo_path, path)
     content = concat_new_and_history_mon_data(metrics_df, history_mon_data)
     
     repo = g.get_repo(repo_path)    
