@@ -67,6 +67,8 @@ def update_compared_data(df, github_access_token, repo_path, path):
     message = "Updated by Monitoring script using PyGithub API"
 
     df["Time_String"] = pd.to_datetime(df["Time"], unit="ms")
+    df = df[["Time", "Time_String", "Close","Forecasted Price"]]
+    df.columns = ["Time", "TimeString", "Actual","Forecasted"]
     content = df.to_csv(index=False)
     repo.update_file(path, message, content, contents.sha , branch="main")
 
