@@ -26,4 +26,9 @@ jobs:
       - name: Execute Data ingestion Script
         env: 
           GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          COIN: 'bitcoin'
+          LOOK_BACK_DAYS: 30
+          FORECASTED_PRICES_FILE_PATH: "forecast/data/ForecastedPrices.csv"
+          MONITORING_FILE_PATH: "forecast/data/Monitoring.csv"
+          ACTUALVSFORECASTED_FILEPATH: "forecast/data/ActualVsForecasted.csv"
         run: python forecast/monitoring/monitoring.py
