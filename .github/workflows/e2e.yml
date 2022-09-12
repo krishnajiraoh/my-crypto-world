@@ -15,8 +15,12 @@ jobs:
   data-forecast:
     needs: data-ingestion
     uses: krishnajiraoh/my-crypto-world/.github/workflows/data-forecast.yml@main
+    secrets:
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
   data-monitoring:
     needs : [data-ingestion, data-forecast]
     uses: krishnajiraoh/my-crypto-world/.github/workflows/data-monitoring.yml@main
+    secrets:
+      GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
 
