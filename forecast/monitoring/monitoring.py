@@ -59,11 +59,10 @@ def update_monitoring_data(metrics_df, github_access_token, repo_path, path):
 
     repo.update_file(path, message, content, contents.sha , branch="main")
 
-def update_compared_data(df, path="forecast/data/ActualVsForecasted.csv"):
-    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+def update_compared_data(df, github_access_token, repo_path, path):
     g = Github(github_access_token)
     
-    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
+    repo = g.get_repo(repo_path)
     contents = repo.get_contents(path)
     message = "Updated by Monitoring script using PyGithub API"
 
