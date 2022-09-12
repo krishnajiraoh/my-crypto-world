@@ -1,7 +1,7 @@
 name: e2e
 
 on:
-  #schedule:
+  #schedule: 
   #  - cron: '0 0/24 * * *' #Execute every 6 hours
   workflow_dispatch 
 
