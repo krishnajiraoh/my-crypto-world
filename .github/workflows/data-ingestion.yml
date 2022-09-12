@@ -3,7 +3,8 @@ name: data-ingestion
 on:
   #schedule:
   #  - cron: '0 0/24 * * *' #Execute every 6 hours
-  workflow_dispatch 
+  workflow_dispatch:
+  workflow_call: 
 
 jobs:
   build:
