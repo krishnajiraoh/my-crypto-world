@@ -4,20 +4,20 @@ from sklearn.metrics import r2_score,mean_absolute_error,mean_squared_error,mean
 import pandas as pd
 import os,io,time
 
-def get_forecasted_data():
-    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+def get_env_data():
+    return os.environ.get('COIN'), os.environ.get('LOOK_BACK_DAYS'), os.environ.get('GH_ACCESS_TOKEN'), os.environ.get('GITHUB_REPOSITORY'), os.environ.get('FORECASTED_PRICES_FILE_PATH'), os.environ.get('MONITORING_FILE_PATH'), os.environ.get('ACTUALVSFORECASTED_FILEPATH')  
+ 
+def get_forecasted_data(github_access_token, repo_path, path):
     g = Github(github_access_token)
-
-    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
-    path = "forecast/data/Forecasted_Prices.csv"
+    repo = g.get_repo(repo_path)    
     contents = repo.get_contents(path)
     data = contents.decoded_content.decode("utf-8") 
     
     return pd.read_csv(io.StringIO(data), sep=",")
 
-def get_actual_data():
+def get_actual_data(coin,days):
     cg = CoinGeckoAPI()
-    data = cg.get_coin_ohlc_by_id(id='bitcoin', vs_currency="usd", days="30")
+    data = cg.get_coin_ohlc_by_id(id=coin, vs_currency="usd", days=days)
     cols= ["Time", "Open", "High", "Low", "Close"]
     df = pd.DataFrame(data, columns=cols)
     df = df[["Time","Close"]]
@@ -36,11 +36,9 @@ def get_metrics(df):
     }
     return pd.DataFrame(metrics_dic, index=[0])
 
-def get_history_monitoring_data(path="forecast/data/Monitoring.csv"):
-    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+def get_history_monitoring_data(github_access_token, repo_path, path):
     g = Github(github_access_token)
-
-    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
+    repo = g.get_repo(repo_path)    
     contents = repo.get_contents(path)
     data = contents.decoded_content.decode("utf-8") 
     
@@ -49,14 +47,13 @@ def get_history_monitoring_data(path="forecast/data/Monitoring.csv"):
 def concat_new_and_history_mon_data(metrics_df, data):
     return data + metrics_df.to_csv(index=False, header=False)
 
-def update_monitoring_data(metrics_df, path="forecast/data/Monitoring.csv"):
-    github_access_token = os.environ.get('GH_ACCESS_TOKEN') 
+def update_monitoring_data(metrics_df, github_access_token, repo_path, path):
     g = Github(github_access_token)
 
     history_mon_data = get_history_monitoring_data()
     content = concat_new_and_history_mon_data(metrics_df, history_mon_data)
     
-    repo = g.get_repo("krishnajiraoh/my-crypto-world")    
+    repo = g.get_repo(repo_path)    
     contents = repo.get_contents(path)
     message = "Updated by Monitoring script using PyGithub API"
 
@@ -74,16 +71,21 @@ def update_compared_data(df, path="forecast/data/ActualVsForecasted.csv"):
     repo.update_file(path, message, content, contents.sha , branch="main")
 
 def monitor():
-    pred = get_forecasted_data()
-    actual = get_actual_data()
 
+    coin,days,github_access_token,repo_path,forcasted_file_path,monitoring_file_path,actualvspredicted_file_path = get_env_data() 
+    
+    pred = get_forecasted_data(github_access_token,repo_path,forcasted_file_path)
+    actual = get_actual_data(coin,days)
+    
     merge_df = actual.merge(pred, on="Time", how="inner")
     merge_df.sort_values(by="Time", ascending=False, inplace=True)
-
-    metrics_df = get_metrics(merge_df)
     
-    update_monitoring_data(metrics_df)
-    update_compared_data(merge_df)
+    if merge_df.empty:
+        print("No matches found during merge")
+    else:
+        metrics_df = get_metrics(merge_df)
+        update_monitoring_data(metrics_df,github_access_token,repo_path,monitoring_file_path)
+        update_compared_data(merge_df,github_access_token,repo_path,actualvspredicted_file_path)
 
 if __name__ == '__main__':
     monitor()

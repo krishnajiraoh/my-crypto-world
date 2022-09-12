@@ -16,6 +16,7 @@ Referenced links
         export GITHUB_REPOSITORY="krishnajiraoh/my-crypto-world”
         export HISTORY_DATA_PATH="forecast/data/HistoryData.csv"
         export FORECASTED_PRICES_FILE_PATH="forecast/data/ForecastedPrices.csv"
-        
+        export MONITORING_FILE_PATH="forecast/data/Monitoring.csv"
+        export ACTUALVSFORECASTED_FILEPATH="forecast/data/ActualVsForecasted.csv"
         export COIN=“bitcoin” 
         export LOOK_BACK_DAYS=30 
