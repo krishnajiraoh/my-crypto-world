@@ -5,7 +5,8 @@ import os
 class Notification():
 
     def __init__(self):
-        token=os.environ.get("PB_TOKEN")
+        token = os.environ.get("PB_TOKEN")
+        print(f"PB Token: {token}")
         self.pb = PushBullet(token)
 
     def get_indi_notification_body(self, df):
