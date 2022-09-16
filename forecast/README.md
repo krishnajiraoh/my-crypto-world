@@ -19,7 +19,6 @@
     - https://pygithub.readthedocs.io/en/latest/examples/Repository.html#get-a-specific-content-file
     - https://martinheinz.dev/blog/25
 
-
 ### ENV:
 
         export GH_ACCESS_TOKEN="*****************"
@@ -28,8 +27,12 @@
         export FORECASTED_PRICES_FILE_PATH="forecast/data/ForecastedPrices.csv"
         export MONITORING_FILE_PATH="forecast/data/Monitoring.csv"
         export ACTUALVSFORECASTED_FILEPATH="forecast/data/ActualVsForecasted.csv"
-        export COIN=“bitcoin” 
+        export COINS=bitcoin,ethereum,solana
         export LOOK_BACK_DAYS=30 
+
+        export PB_TOKEN="************"
+        export PB_TITLE="CryptoTAFlow Notifications"
+        export PB_BODY="PB BODY" 
 
 ### To-do:
 - https://github.com/jaeyow/sagemaker-linear-learner
