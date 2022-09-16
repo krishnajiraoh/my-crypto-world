@@ -39,5 +39,5 @@ jobs:
           PB_TOKEN: ${{ secrets.PB_TOKEN }}
           PB_TITLE: "CryptoTAFlow Notifications"
         run: |
-          cd technical-analysis 
+          cd technical_analysis 
           python TechnicalAnalysis.py run
