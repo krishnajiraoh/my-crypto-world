@@ -11,3 +11,4 @@ forecast/data-ingestion/.ipynb_checkpoints/requirements-checkpoint.txt
 technical_analysis/.metaflow/*
 technical_analysis/my_talib/__pycache__/*
 technical_analysis/notification/__pycache__/*
+technical_analysis/__pycache__/*

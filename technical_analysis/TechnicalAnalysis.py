@@ -61,11 +61,11 @@ class CryptoTAFlow(FlowSpec):
         """
         import pandas as pd
 
-        rsi = {
+        indicators = {
                 inp.coin : inp.basic_indicators 
                 for inp in inputs
             }
-        self.df_indicators = pd.DataFrame(rsi).T
+        self.df_indicators = pd.DataFrame(indicators).T
         self.next(self.notify)
 
     @step
