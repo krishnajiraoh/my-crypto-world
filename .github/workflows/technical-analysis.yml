@@ -1,0 +1,38 @@
+name: technical-analysis
+
+on:
+  #schedule:
+  #  - cron: '0 0/24 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Access the repo
+        uses: actions/checkout@v2 
+    
+      - name: Configure Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.7'
+
+      - name: Install ta-lib cython lib
+        run: |
+          wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+          tar xvfz ta-lib-0.4.0-src.tar.gz
+          cd ta-lib
+          ./configure
+          make
+          sudo make install 
+      
+      - name: Install necessary libraries
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r technical_analysis/requirements.txt
+          
+      - name: Perform TA and send out notifications
+        run: |
+          cd technical-analysis 
+          python TechnicalAnalysis.py run
