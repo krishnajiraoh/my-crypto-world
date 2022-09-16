@@ -33,6 +33,11 @@ jobs:
           pip install -r technical_analysis/requirements.txt
           
       - name: Perform TA and send out notifications
+        env: 
+          COINS: bitcoin,ethereum,solana
+          LOOK_BACK_DAYS: 30 
+          PB_TOKEN: ${{ secrets.PB_TOKEN }}
+          PB_TITLE: "CryptoTAFlow Notifications"
         run: |
           cd technical-analysis 
           python TechnicalAnalysis.py run
