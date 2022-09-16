@@ -7,3 +7,7 @@ forecast/data-ingestion/.ipynb_checkpoints/ingestion-checkpoint.ipynb
 .idea/my-crypto-world.iml
 forecast/data-ingestion/.ipynb_checkpoints/requirements-checkpoint.txt
 .idea/vcs.xml
+.metaflow/*
+technical_analysis/.metaflow/*
+technical_analysis/my_talib/__pycache__/*
+technical_analysis/notification/__pycache__/*
