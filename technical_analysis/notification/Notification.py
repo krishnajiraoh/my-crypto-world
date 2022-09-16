@@ -54,6 +54,7 @@ class Notification():
 
     
     def send_indi_notification(self,body):
+        print(body)
         self.push_note(os.environ.get("PB_TITLE"), body)
 
     def push_note(self,title="Title",body="Body"):
