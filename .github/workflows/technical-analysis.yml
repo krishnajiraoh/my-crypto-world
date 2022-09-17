@@ -2,7 +2,7 @@ name: technical-analysis
 
 on:
   schedule:
-   - cron: '* */4 * * *'
+   - cron: '0 0/4 * * *'
   workflow_dispatch:
 
 jobs:
