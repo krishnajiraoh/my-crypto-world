@@ -2,5 +2,5 @@ metaflow
 pycoingecko
 pandas
 pushbullet.py
-tensorflow==2.4.1
+tensorflow
 sklearn
