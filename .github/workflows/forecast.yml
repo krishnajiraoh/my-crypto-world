@@ -31,4 +31,4 @@ jobs:
           PB_TITLE: "Crypto Forecasts"
         run: |
           cd forecast 
-          python Forecast.py run
+          python Forecast.py --no-pylint run
