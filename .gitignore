@@ -12,3 +12,6 @@ technical_analysis/.metaflow/*
 technical_analysis/my_talib/__pycache__/*
 technical_analysis/notification/__pycache__/*
 technical_analysis/__pycache__/*
+.vscode/launch.json
+.DS_Store
+forecast/notification/__pycache__/Notification.cpython-38.pyc
