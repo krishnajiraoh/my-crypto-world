@@ -1,6 +1,7 @@
 metaflow
 pycoingecko
-pandas
 pushbullet.py
+numpy
+pandas
 tensorflow
 sklearn
