@@ -7,7 +7,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import LSTM
 from sklearn.preprocessing import MinMaxScaler
 
-print(tf__version__)
+print(tf.__version__)
 
 class CryptoForecastFlow(FlowSpec):
     """"
