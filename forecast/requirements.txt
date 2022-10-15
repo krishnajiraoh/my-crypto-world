@@ -2,3 +2,5 @@ metaflow
 pycoingecko
 pandas
 pushbullet.py
+tensorflow
+sklearn
