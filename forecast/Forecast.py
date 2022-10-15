@@ -7,6 +7,8 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import LSTM
 from sklearn.preprocessing import MinMaxScaler
 
+print(tf__version__)
+
 class CryptoForecastFlow(FlowSpec):
     """"
     A flow to generate and notify forecasted prices of crypto currencies
