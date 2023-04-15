@@ -3,5 +3,5 @@ pycoingecko
 pushbullet.py
 numpy
 pandas
-sklearn
+scikit-learn
 tensorflow
