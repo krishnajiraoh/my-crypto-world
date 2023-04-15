@@ -3,5 +3,5 @@ pycoingecko
 pushbullet.py
 numpy
 pandas
-tensorflow
 sklearn
+tensorflow
