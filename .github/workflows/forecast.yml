@@ -25,7 +25,7 @@ jobs:
           
       - name: Forecast and send out notifications
         env: 
-          COINS: bitcoin,ethereum,solana
+          COINS: bitcoin,ethereum,solana,injective-protocol
           LOOK_BACK_DAYS: 30 
           PB_TOKEN: ${{ secrets.PB_TOKEN }}
           PB_TITLE: "Crypto Forecasts"
