@@ -1,13 +1,13 @@
 from metaflow import FlowSpec, step
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+"""import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import LSTM
 from sklearn.preprocessing import MinMaxScaler
 
-print(tf.__version__)
+print(tf.__version__)"""
 
 class CryptoForecastFlow(FlowSpec):
     """"
@@ -56,90 +56,34 @@ class CryptoForecastFlow(FlowSpec):
     @step
     def forecast(self):
         """
-        4. Forecast prices for each coin
+        4. Forecast prices for each coin using prophet library
         """
 
-        def create_dataset(dataset, look_back=1):
-            dataX, dataY = [], []
-            for i in range(len(dataset)-look_back-1):
-                a = dataset[i:(i+look_back), 0]
-                dataX.append(a)
-                dataY.append(dataset[i + look_back, 0])
-            return np.array(dataX), np.array(dataY)
+        def get_predictions(coin='bitcoin', days=30, pred_periods=6):
+            from pycoingecko import CoinGeckoAPI
+            import pandas as pd
+            from prophet import Prophet
 
-        # load the dataset
-        dataset = self.df[['Close']].values
-        dataset = dataset.astype('float32')
-        dataset[:5]
+            cg = CoinGeckoAPI()
 
-        #---------------------------------------------------------#
-        # normalize the dataset
-        scaler = MinMaxScaler(feature_range=(0, 1))
-        dataset = scaler.fit_transform(dataset)
-        dataset[:5]
+            data = cg.get_coin_ohlc_by_id(id=coin, vs_currency="usd", days=days)
 
-        #---------------------------------------------------------#
-        # split into train and test sets
-        train_size = int(len(dataset) * 0.67)
-        test_size = len(dataset) - train_size
-        train, test = dataset[0:train_size,:], dataset[train_size:len(dataset),:]
+            cols= ["ds", "Open", "High", "Low", "y"]
+            df = pd.DataFrame(data, columns=cols)  
+            df = df[["ds", "y"]] 
+            df['ds'] = pd.to_datetime(df['ds'], unit='ms')    
 
-        # reshape into X=t and Y=t+1
-        look_back = 1
-        trainX, trainY = create_dataset(train, look_back)
-        testX, testY = create_dataset(test, look_back)
+            m = Prophet()
+            m.fit(df)
 
-        # reshape input to be [samples, time steps, features]
-        trainX = np.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
-        testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
+            future = m.make_future_dataframe(periods=pred_periods, freq='4H')
+            fcst = m.predict(future)
 
-        #---------------------------------------------------------#
-        # create and fit the LSTM network
-        tf.random.set_seed(7)
-        model = Sequential()
-        model.add(LSTM(4, input_shape=(1, look_back)))
-        model.add(Dense(1))
-        model.compile(loss='mean_squared_error', optimizer='adam')
-        model.fit(trainX, trainY, epochs=100, batch_size=1, verbose=2)
+            #fig = m.plot(fcst)
 
-        #---------------------------------------------------------#
-        # make predictions
-        trainPredict = model.predict(trainX)
-        testPredict = model.predict(testX)
+            return fcst
 
-        ms_in_hour = 3.6e6
-        last_date = self.df.iloc[-1,0]
-
-        X = testX[-1].reshape(1,1,1)
-
-        y = np.array([])
-        dates = np.array([])
-        predictions = 6
-        n = 0
-
-        while(n<predictions):    
-            y_pred = model.predict(X)
-            y = np.append(y, y_pred)
-
-            next_date = 4 * ms_in_hour + last_date
-            dates = np.append(dates, next_date)    
-
-            X=y_pred.reshape(1,1,1)
-            last_date = next_date
-            n+=1
-
-
-        y = np.expand_dims(y, axis=0)
-        f = scaler.inverse_transform(y)
-        f = np.reshape(f,-1)
-
-        #---------------------------------------------------------#
-        self.pred = pd.DataFrame(np.vstack((dates, f))).T
-        self.pred.columns = ["Time", "Forecasted Price"]
-        self.pred["Time"] = pd.to_datetime(self.pred.Time, unit='ms')
-        self.pred["Forecasted Price"] = round(self.pred["Forecasted Price"],2)
-
-        self.pred.sort_values(by="Time", ascending=True, inplace=True)
+        self.fcst = get_predictions(coin=self.coin, days=30, pred_periods=6)
         
         self.next(self.join)
 
@@ -149,7 +93,7 @@ class CryptoForecastFlow(FlowSpec):
         5.1 Merge the data
         """
         self.forecasts = {
-                inp.coin : inp.pred 
+                inp.coin : inp.fcst 
                 for inp in inputs
             }
         print("joined")

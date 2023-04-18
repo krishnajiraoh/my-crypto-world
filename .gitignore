@@ -15,3 +15,7 @@ technical_analysis/__pycache__/*
 .vscode/launch.json
 .DS_Store
 forecast/notification/__pycache__/Notification.cpython-38.pyc
+forecast/Forecast-jvsc-7df14eb1-7631-4a6b-a81c-6e570e880f14.ipynb
+forecast/.ipynb_checkpoints/Forecast-jvsc-7df14eb1-7631-4a6b-a81c-6e570e880f14-checkpoint.ipynb
+forecast/notification/__pycache__/Notification.cpython-39.pyc
+my_crypto_dashboard

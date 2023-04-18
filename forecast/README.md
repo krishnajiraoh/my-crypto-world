@@ -30,9 +30,16 @@
         export COINS=bitcoin,ethereum,solana
         export LOOK_BACK_DAYS=30 
 
-        export PB_TOKEN="************"
+        export PB_TOKEN=************
         export PB_TITLE="CryptoTAFlow Notifications"
         export PB_BODY="PB BODY" 
 
 ### To-do:
 - https://github.com/jaeyow/sagemaker-linear-learner
+
+
+convertdate
+lunarcalendar
+holidays
+tqdm
+pystan
