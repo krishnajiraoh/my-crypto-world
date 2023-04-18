@@ -62,6 +62,7 @@ class CryptoForecastFlow(FlowSpec):
         def get_predictions(coin='bitcoin', days=30, pred_periods=6):
             from pycoingecko import CoinGeckoAPI
             import pandas as pd
+            import numpy as np
             from prophet import Prophet
 
             cg = CoinGeckoAPI()
@@ -80,6 +81,8 @@ class CryptoForecastFlow(FlowSpec):
             fcst = m.predict(future)
 
             #fig = m.plot(fcst)
+            fcst = fcst[["ds", "yhat"]].iloc[-pred_periods:,:]
+            fcst["yhat"] = np.round(fcst["yhat"],4)
 
             return fcst
 

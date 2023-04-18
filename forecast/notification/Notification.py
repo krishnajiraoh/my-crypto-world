@@ -13,8 +13,7 @@ class Notification():
         body = ""
         for f in forecasts.keys():
             body = body + f + "\n"
-            df = forecasts[f][["ds", "yhat"]].iloc[-6:,:]
-            body+= df.to_csv(index=False, header=False, sep="\t", date_format='%-I %p')
+            body+= forecasts[f].to_csv(index=False, header=False, sep="\t", date_format='%-I %p')
             body+= "\n"
         return title, body
         
