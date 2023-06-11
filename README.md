@@ -20,6 +20,7 @@
 | VRA| DCA | <$0.0002|
 | METIS| load up | <$14|
 | PYR| load the hell up | <$1.5|
+|INJ|load the hell up |$5
 
 
 #### Watchlist
