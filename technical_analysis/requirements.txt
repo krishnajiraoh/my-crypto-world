@@ -3,3 +3,4 @@ metaflow
 pycoingecko
 pandas
 pushbullet.py
+python-telegram-bot

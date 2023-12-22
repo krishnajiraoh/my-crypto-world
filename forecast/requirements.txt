@@ -1,6 +1,7 @@
 metaflow
 pycoingecko
 pushbullet.py
+python-telegram-bot
 numpy
 pandas
 prophet

@@ -1,4 +1,5 @@
 from pushbullet import PushBullet
+from telegram import Bot
 import os
 import Constants
 
@@ -8,6 +9,10 @@ class Notification():
     def __init__(self):
         token = os.environ.get("PB_TOKEN")
         self.pb = PushBullet(token)
+
+        bot_token = os.environ.get("TG_BOT_TOKEN")
+        self.tg_channel_id = os.environ.get("TG_CHANNEL_ID")
+        self.tg_bot = Bot(token=bot_token)
 
     def get_indi_notification_body(self, df):
         body = ""
@@ -57,5 +62,6 @@ class Notification():
         print(body)
         self.push_note(os.environ.get("PB_TITLE"), body)
 
-    def push_note(self,title="Title",body="Body"):
+    async def push_note(self,title="Title",body="Body"):
         self.pb.push_note(title,body)
+        await self.bot.send_message(chat_id=self.tg_channel_id, text=body)
