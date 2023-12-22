@@ -103,7 +103,7 @@ class CryptoForecastFlow(FlowSpec):
         self.next(self.notify)
 
     @step
-    def notify(self):
+    async def notify(self):
         """
         5.2 Send out notifications if necessary 
         """
@@ -111,13 +111,14 @@ class CryptoForecastFlow(FlowSpec):
         from notification.Notification import Notification        
         noti = Notification()
 
-        noti.send_forecast_notification(self.forecasts)
+        await noti.send_forecast_notification(self.forecasts)
 
         self.next(self.end)
 
     @step
     def end(self):
         print("Done")
+
 
 if __name__ == "__main__":
     CryptoForecastFlow()
