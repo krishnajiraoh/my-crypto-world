@@ -103,7 +103,7 @@ class CryptoForecastFlow(FlowSpec):
         self.next(self.notify)
 
     @step
-    async def notify(self):
+    def notify(self):
         """
         5.2 Send out notifications if necessary 
         """
@@ -111,7 +111,22 @@ class CryptoForecastFlow(FlowSpec):
         from notification.Notification import Notification        
         noti = Notification()
 
-        await noti.send_forecast_notification(self.forecasts)
+        #noti.send_forecast_notification(self.forecasts)
+
+        async def my_coroutine():
+            await noti.push_note("CryptoTAFlow Notifications", self.body)
+            return "Coroutine executed"
+            # Create a new event loop
+            loop = asyncio.new_event_loop()
+            # Set the event loop for the current context
+            asyncio.set_event_loop(loop)
+            try:
+                # run the coroutine
+                result = loop.run_until_complete(my_coroutine())
+                print(result)
+            finally:
+                # close the event loop
+                loop.close()
 
         self.next(self.end)
 
