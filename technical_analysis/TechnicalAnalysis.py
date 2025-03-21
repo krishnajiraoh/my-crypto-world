@@ -80,8 +80,26 @@ class CryptoTAFlow(FlowSpec):
         noti = Notification()
         self.body = noti.get_indi_notification_body(self.df_indicators)
         
-        if len(self.body) > 0:
-            noti.push_note("CryptoTAFlow Notifications", self.body)
+        #if len(self.body) > 0:
+            #noti.push_note("CryptoTAFlow Notifications", self.body)
+
+        async def my_coroutine():
+            await noti.push_note("CryptoTAFlow Notifications", self.body)
+            return "Coroutine executed"
+
+            # Create a new event loop
+            loop = asyncio.new_event_loop()
+
+            # Set the event loop for the current context
+            asyncio.set_event_loop(loop)
+
+            try:
+                # run the coroutine
+                result = loop.run_until_complete(my_coroutine())
+                print(result)
+            finally:
+                # close the event loop
+                loop.close()
 
         self.next(self.end)
 
